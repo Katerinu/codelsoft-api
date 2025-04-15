@@ -1,10 +1,9 @@
 const express = require('express');
 const morgan = require('morgan');
-const authRouter = require('./src/routers/authRouter');
-const videoRouter = require('./src/routers/videoRouter');
-const billsRouter = require('./src/routers/billsRouter');
-const usersRouter = require('./src/routers/usersRouter');
-
+const authRouter = require('./src/modules/auth/routers/authRouter');
+const videoRouter = require('./src/modules/video/routers/videoRouter');
+const billsRouter = require('./src/modules/bills/routers/billsRouter');
+const usersRouter = require('./src/modules/users/routers/usersRouter');
 
 
 const PORT = 3000;

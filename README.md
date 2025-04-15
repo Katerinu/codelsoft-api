@@ -8,12 +8,12 @@ Este es el repositorio que sera utilizado durante la  ayudantía de arquitectura
 
 1. **Clonar el repositorio**
 ```bash
-git clone https://github.com/Katerinu/codelsoft-api.git
+git clone https://github.com/Katerinu/codelsoft-api
 ```
 
 2. **Ingresar al directorio del proyecto**
 ```bash
-cd 
+cd codelsoft-api
 ```
 
 3. **Instalar las dependencias**
