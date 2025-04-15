@@ -1,0 +1,42 @@
+services:
+    mongodb:
+        image: mongo:latest
+        container_name: mongodb-codelsoft
+        restart: always
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: admin
+            MONGO_INITDB_ROOT_PASSWORD: root
+        ports:
+        - "27017:27017"
+
+    mariadb:
+        image: mariadb:latest
+        container_name: mariadb-codelsoft
+        environment:
+            MYSQL_ROOT_PASSWORD: rootpassword
+            MYSQL_DATABASE: mydatabase
+            MYSQL_USER: user
+            MYSQL_PASSWORD: userpassword
+        ports:
+            - "3306:3306"
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin:latest
+        container_name: phpmyadmin-codelsoft
+        environment:
+            PMA_HOST: mariadb
+            PMA_USER: root
+            PMA_PASSWORD: rootpassword
+        ports:
+        - "8080:80"
+    postgres:
+        image: postgres:latest
+        container_name: postgres-codelsoft
+        restart: always
+        environment:
+            POSTGRES_USER: user
+            POSTGRES_PASSWORD: userpassword
+            POSTGRES_DB: mydatabase
+            PGDATA: /data/postgres
+        ports:
+            - "5432:5432"
