@@ -2,6 +2,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const { config } = require('dotenv');
+const { connect } = require('mongoose');
 
 /*Importes de los routers para asi poder acceder correctamente a las rutas correspondientes.*/
 const authRouter = require('./src/modules/auth/routers/authRouter');
@@ -13,6 +14,16 @@ const usersRouter = require('./src/modules/users/routers/usersRouter');
 config({path:'.env'});
 const PORT = process.env.PORT;
 const environment = process.env.NODE_ENV;
+
+/*Se reemplazan los valores en nuestro .env con la clave y el user correspondiente para asi conectarnos a nuestra DB de mongo.
+Se le esta asignando a uina variable para asi posteriormente conectarse por medio de mongoose*/
+const DB = process.env.MONGO_DATABASE.replace(
+"<PASSWORD>",
+process.env.MONGO_PASSWORD
+).replace("<USER>", process.env.MONGO_USER);
+
+connect(DB).then(() => console.log("✓ Conexión a base de datos exitosa"));
+
 
 /*Configuracion de express para el funcionamiento de la API.*/
 /*Se añade morgan para visualizar el uso de la API y .json para transformar todo a JSON*/
