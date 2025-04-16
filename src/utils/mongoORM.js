@@ -2,10 +2,10 @@ import dotenv from 'dotenv';
 import { MongoClient, ObjectId } from 'mongodb';
 
 dotenv.config();
-const uri = process.env.MONGO_DATABASE_VIDEOS.replace(
+const uri = process.env.MONGO_DATABASE_USERS.replace(
     "<PASSWORD>",
-    process.env.MONGO_PASSWORD_VIDEOS
-    ).replace("<USER>", process.env.MONGO_USER_VIDEOS);
+    process.env.MONGO_PASSWORD_USERS
+    ).replace("<USER>", process.env.MONGO_USER_USERS);
 
 const client = new MongoClient(uri);
 const dbName = process.env.DATABASE_NAME;

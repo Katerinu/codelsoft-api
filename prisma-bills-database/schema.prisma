@@ -13,3 +13,8 @@ datasource db {
   provider = "mysql"
   url      = env("SQL_BILLS_DATABASE_URL")
 }
+
+model Placeholder {
+  id    Int     @id @default(autoincrement())
+  placeholderValue String
+}
