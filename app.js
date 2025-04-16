@@ -2,7 +2,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const { config } = require('dotenv');
-const { connect } = require('mongoose');
+var Mongoose = require('mongoose').Mongoose;
 
 /*Importes de los routers para asi poder acceder correctamente a las rutas correspondientes.*/
 const authRouter = require('./src/modules/auth/routers/authRouter');
@@ -16,24 +16,21 @@ config({path:'.env'});
 const PORT = process.env.PORT;
 const environment = process.env.NODE_ENV;
 
-/*Se reemplazan los valores en nuestro .env con la clave y el user correspondiente para asi conectarnos a nuestra DB de mongo.
-Se le esta asignando a uina variable para asi posteriormente conectarse por medio de mongoose*/
+/*Configuracion de mongoose para la conexion a las bases de datos. Se crean instancias para cada una de las bases de datos.*/
+var video_instance = new Mongoose();
 const DB_VIDEOS = process.env.MONGO_DATABASE_VIDEOS.replace(
 "<PASSWORD>",
 process.env.MONGO_PASSWORD_VIDEOS
 ).replace("<USER>", process.env.MONGO_USER_VIDEOS);
+video_instance.connect(DB_VIDEOS).then(() => console.log("✓ Conexión a base de datos VIDEOS exitosa"));
 
-connect(DB_VIDEOS).then(() => console.log("✓ Conexión a base de datos exitosa"));
-
-/*Se reemplazan los valores en nuestro .env con la clave y el user correspondiente para asi conectarnos a nuestra DB de mongo.
-Se le esta asignando a uina variable para asi posteriormente conectarse por medio de mongoose*/
+var user_instance = new Mongoose();
 const DB_USERS = process.env.MONGO_DATABASE_USERS.replace(
-    "<PASSWORD>",
-    process.env.MONGO_PASSWORD_USERS
-    ).replace("<USER>", process.env.MONGO_USER_USERS);
-    
-    connect(DB_USERS).then(() => console.log("✓ Conexión a base de datos exitosa"));
-    
+"<PASSWORD>",
+process.env.MONGO_PASSWORD_USERS
+).replace("<USER>", process.env.MONGO_USER_USERS);
+user_instance.connect(DB_USERS).then(() => console.log("✓ Conexión a base de datos USERS exitosa"));
+
 
 /*Configuracion de express para el funcionamiento de la API.*/
 /*Se añade morgan para visualizar el uso de la API y .json para transformar todo a JSON*/
