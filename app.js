@@ -3,6 +3,7 @@ import express from 'express';
 import morgan from 'morgan';
 import { config } from 'dotenv';
 import { Mongoose } from 'mongoose';
+import { connectDB } from './src/utils/mongoORM.js';
 
 /*Importes de los routers para asi poder acceder correctamente a las rutas correspondientes.*/
 import authRouter from './src/modules/auth/routers/authRouter.js';
@@ -32,13 +33,8 @@ process.env.MONGO_PASSWORD_VIDEOS
 ).replace("<USER>", process.env.MONGO_USER_VIDEOS);
 video_instance.connect(DB_VIDEOS).then(() => console.log("✓ Conexión a base de datos VIDEOS exitosa"));
 
-var user_instance = new Mongoose();
-const DB_USERS = process.env.MONGO_DATABASE_USERS.replace(
-"<PASSWORD>",
-process.env.MONGO_PASSWORD_USERS
-).replace("<USER>", process.env.MONGO_USER_USERS);
-user_instance.connect(DB_USERS).then(() => console.log("✓ Conexión a base de datos USERS exitosa"));
-
+/*Conexion a la base de datos de usuarios, se utiliza un ORM personalizado*/
+await connectDB();
 
 /*Configuracion de express para el funcionamiento de la API.*/
 /*Se añade morgan para visualizar el uso de la API y .json para transformar todo a JSON*/
