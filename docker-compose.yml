@@ -1,13 +1,22 @@
 services:
-    mongodb:
+    mongodb_videos:
         image: mongo:latest
-        container_name: mongodb-codelsoft
+        container_name: mongodb-codelsoft-videos
         restart: always
         environment:
             MONGO_INITDB_ROOT_USERNAME: admin
             MONGO_INITDB_ROOT_PASSWORD: root
         ports:
         - "27017:27017"
+    mongodb_users:
+        image: mongo:latest
+        container_name: mongodb-codelsoft-users
+        restart: always
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: admin
+            MONGO_INITDB_ROOT_PASSWORD: root
+        ports:
+        - "27018:27018"
 
     mariadb:
         image: mariadb:latest
