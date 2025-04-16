@@ -1,4 +1,4 @@
-const { default: AppError } = require("../utils/appError");
+import AppError from "../utils/appError.js";
 
 const sendErrorDev = (err, req, res) => {
   res.status(err.statusCode).json({
@@ -32,7 +32,6 @@ const globalErrorMiddleware = (err, req, res, next) => {
 
   let error = err;
 
-
   if (process.env.NODE_ENV === "development") {
     return sendErrorDev(error, req, res);
   }
@@ -43,4 +42,4 @@ const globalErrorMiddleware = (err, req, res, next) => {
   sendErrorProd(error, req, res);
 };
 
-module.exports = globalErrorMiddleware;
+export default globalErrorMiddleware;

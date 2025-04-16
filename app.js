@@ -1,20 +1,28 @@
 /*Importes base para el funcionamiento de la API*/
-const express = require('express');
-const morgan = require('morgan');
-const { config } = require('dotenv');
-var Mongoose = require('mongoose').Mongoose;
+import express from 'express';
+import morgan from 'morgan';
+import { config } from 'dotenv';
+import { Mongoose } from 'mongoose';
 
 /*Importes de los routers para asi poder acceder correctamente a las rutas correspondientes.*/
-const authRouter = require('./src/modules/auth/routers/authRouter');
-const videoRouter = require('./src/modules/video/routers/videoRouter');
-const billsRouter = require('./src/modules/bills/routers/billsRouter');
-const usersRouter = require('./src/modules/users/routers/usersRouter');
-const globalErrorMiddleware = require('./src/middleware/globalErrorMiddleware');
+import authRouter from './src/modules/auth/routers/authRouter.js';
+import videoRouter from './src/modules/video/routers/videoRouter.js';
+import billsRouter from './src/modules/bills/routers/billsRouter.js';
+import usersRouter from './src/modules/users/routers/usersRouter.js';
+import globalErrorMiddleware from './src/middleware/globalErrorMiddleware.js';
 
 /*Configuracion de dotenv para poder acceder a las variables de entorno.*/
 config({path:'.env'});
 const PORT = process.env.PORT;
 const environment = process.env.NODE_ENV;
+
+/* Validación de variables de entorno necesarias */
+if (!process.env.MONGO_DATABASE_VIDEOS || !process.env.MONGO_PASSWORD_VIDEOS || !process.env.MONGO_USER_VIDEOS) {
+    throw new Error("Faltan variables de entorno para la base de datos VIDEOS");
+}
+if (!process.env.MONGO_DATABASE_USERS || !process.env.MONGO_PASSWORD_USERS || !process.env.MONGO_USER_USERS) {
+    throw new Error("Faltan variables de entorno para la base de datos USERS");
+}
 
 /*Configuracion de mongoose para la conexion a las bases de datos. Se crean instancias para cada una de las bases de datos.*/
 var video_instance = new Mongoose();

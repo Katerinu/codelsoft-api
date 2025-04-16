@@ -1,6 +1,5 @@
-/*Importes del controlador y el router de express para que este archivo funcione como el enrutador de el auth.*/
-const { Router } = require('express');
-const { authCheck } = require('../controllers/authController');
+import { Router } from 'express';
+import { authCheck } from '../controllers/authController.js';
 
 /*Configuracion del router para que funcione como el enrutador de el auth.*/
 const authRouter = Router();
@@ -10,4 +9,4 @@ Aqui deben ir todas las rutas necesarias*/
 authRouter.get("/", authCheck);
 
 /*Exporte del modulo para ser llamado en app.js*/
-module.exports = authRouter;
+export default authRouter;

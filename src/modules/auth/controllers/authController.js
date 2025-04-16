@@ -4,4 +4,4 @@ const authCheck = (req, res) => {
 }
 
 /*Exporte de todos los metodos correspondientes al controlador para ser usados en nuestro Router.*/
-module.exports = { authCheck };
+export { authCheck };
