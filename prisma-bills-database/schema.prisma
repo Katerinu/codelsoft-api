@@ -13,3 +13,18 @@ datasource db {
   provider = "mysql"
   url      = env("SQL_BILLS_DATABASE_URL")
 }
+
+enum BillStatus {
+  Pending
+  Paid
+  Overdue
+}
+
+model Bill {
+  id          Int       @id @default(autoincrement())
+  status      BillStatus
+  userId      Int
+  amount      Int
+  issuedAt    DateTime  @default(now())
+  paidAt      DateTime? 
+}
