@@ -3,6 +3,7 @@ import { generateTokenJWT, verifyTokenJWT} from "../../../utils/tokenGenerator.j
 import { getDocument, createDocument} from "../../../utils/mongoORM.js";
 import { v4 as uuidv4 } from 'uuid';
 import dayjs from "dayjs";
+import { syncUserCreation } from "../../auth/controllers/authController.js";
 
 /*Metodo de prueba*/
 const usersCheck = (req, res) => {
@@ -14,6 +15,10 @@ const createUser = async (req, res) => {
     
     if (!name || !lastname || !email || !password || !password_confirmation || !role) {
         return res.status(400).json({ message: "Faltan campos obligatorios" });
+    }
+
+    if(role !== "Administrador" && role !== "Cliente"){
+        return res.status(400).json({ message: "El rol no es válido" });
     }
 
     if(role === "Administrador"){
@@ -38,17 +43,12 @@ const createUser = async (req, res) => {
 
     const hashedPassword = bcrypt.hashSync(password, 10);
 
-
-    const searched_role = await getDocument("Roles", { name: role });
-    if (!searched_role) {
-        return res.status(400).json({ message: "El rol no existe" });
-    }
-
     const searched_user = await getDocument("Users", { email: email });
 
     if (searched_user) {
         return res.status(400).json({ message: "El email ya está en uso" });
     }
+
 
     const uuid = uuidv4();
     const date = dayjs().format("YYYY-MM-DDTHH:mm:ssZ");
@@ -58,7 +58,7 @@ const createUser = async (req, res) => {
         lastname,
         email,
         password: hashedPassword,
-        role: searched_role.id,
+        role: role,
         created_at: date,
         updated_at: date,
     };
@@ -69,13 +69,20 @@ const createUser = async (req, res) => {
         return res.status(500).json({ message: "Error al crear el usuario" });
     }
 
+    const sync = await syncUserCreation(user);
+    
+    if (!sync) {
+        return res.status(500).json({ message: "Error al crear el usuario" });
+    }
+
     const userForToken = {
         uuid: uuid,
         name: user.name,
         lastname: user.lastname,
         email: user.email,
-        role: searched_role.name,
-        role_id: searched_role.id,
+        role: user.role,
+        created_at: user.created_at,
+        updated_at: user.updated_at,
     };
 
     const generatedToken = generateTokenJWT(userForToken);

@@ -134,3 +134,8 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Custom folders
+prisma-auth-database/auth-client/
+prisma-bills-database/bills-client/
+
