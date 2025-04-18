@@ -15,9 +15,9 @@ const usersRouter = Router();
 Aqui deben ir todas las rutas necesarias*/
 usersRouter.get("/", getAllUsers);
 usersRouter.post("/", createUser)
-usersRouter.get("/:id",getUserById);
-usersRouter.patch("/:id",updateUser);
-usersRouter.delete("/:id",deleteUser);
+usersRouter.get("/:uuid",getUserById);
+usersRouter.patch("/:uuid",updateUser);
+usersRouter.delete("/:uuid",deleteUser);
 usersRouter.get("/status", usersCheck);
 /*Exporte del modulo para ser llamado en app.js*/
 export default usersRouter;
