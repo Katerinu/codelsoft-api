@@ -6,7 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../prisma-auth-database/auth-database-client-types"
+  output   = "../prisma-auth-database/auth-client"
 }
 
 datasource db {
