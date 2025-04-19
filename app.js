@@ -2,8 +2,8 @@
 import express from 'express';
 import morgan from 'morgan';
 import { config } from 'dotenv';
-import { Mongoose } from 'mongoose';
 import { connectDB } from './src/utils/mongoORM.js';
+import { connectMongoose } from '../codelsoft-api/src/modules/video/controllers/videoController.js';
 
 /*Importes de los routers para asi poder acceder correctamente a las rutas correspondientes.*/
 import authRouter from './src/modules/auth/routers/authRouter.js';
@@ -26,12 +26,7 @@ if (!process.env.MONGO_DATABASE_USERS || !process.env.MONGO_PASSWORD_USERS || !p
 }
 
 /*Configuracion de mongoose para la conexion a las bases de datos. Se crean instancias para cada una de las bases de datos.*/
-var video_instance = new Mongoose();
-const DB_VIDEOS = process.env.MONGO_DATABASE_VIDEOS.replace(
-"<PASSWORD>",
-process.env.MONGO_PASSWORD_VIDEOS
-).replace("<USER>", process.env.MONGO_USER_VIDEOS);
-video_instance.connect(DB_VIDEOS).then(() => console.log("✓ Conexión a base de datos VIDEOS exitosa"));
+await connectMongoose();
 
 /*Conexion a la base de datos de usuarios, se utiliza un ORM personalizado*/
 await connectDB();
