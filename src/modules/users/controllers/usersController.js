@@ -1,9 +1,9 @@
 import bcrypt from "bcryptjs";
 import { generateTokenJWT, verifyTokenJWT} from "../../../utils/tokenGenerator.js";
-import { getDocument, createDocument, updateDocument} from "../../../utils/mongoORM.js";
+import { getDocument, createDocument, updateDocument, getCollection} from "../../../utils/mongoORM.js";
 import { v4 as uuidv4 } from 'uuid';
 import dayjs from "dayjs";
-import { syncUserCreation, syncUserUpdate } from "../../auth/controllers/authController.js";
+import { syncUserCreation, syncUserUpdate, syncUserDelete } from "../../auth/controllers/authController.js";
 
 /*Metodo de prueba*/
 const usersCheck = (req, res) => {
@@ -57,6 +57,7 @@ const createUser = async (req, res) => {
         lastname,
         email,
         password: hashedPassword,
+        status: "Active",
         role: role,
         created_at: date,
         updated_at: date,
@@ -117,6 +118,10 @@ const getUserById = async (req, res) => {
             return res.status(404).json({ message: "Usuario no encontrado" });
         }
 
+        if(user.status !== "Active"){
+            return res.status(403).json({ message: "No se ha encontrado al usuario." });
+        }
+
         const userToSend = {
             uuid: user.uuid,
             name: user.name,
@@ -156,6 +161,10 @@ const updateUser = async (req, res) => {
     console.log("searched_user: ", searched_user);
     if (!searched_user) {
         return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    if(searched_user.status !== "Active"){
+        return res.status(403).json({ message: "No se ha encontrado al usuario." });
     }
 
     const decodedToken = verifyTokenJWT(token);
@@ -210,12 +219,98 @@ const updateUser = async (req, res) => {
     return res.status(200).json({ message: "Usuario actualizado correctamente", user: user });
 }
 
-const deleteUser = (req, res) => {
-    res.status(200).send("OK Delete User");
+const deleteUser = async (req, res) => {
+    const { uuid } = req.params;
+    const token = req.headers.authorization;
+
+    if (!uuid) {
+        return res.status(400).json({ message: "Falta el uuid del usuario a eliminar" });
+    }
+    if (!token) {
+        return res.status(401).json({ message: "Se requiere un token de inicio de sesión" });
+    }
+
+    const decodedToken = verifyTokenJWT(token);
+    if (!decodedToken) {
+        return res.status(401).json({ message: "Token inválido" });
+    }
+
+    if (decodedToken.user.role !== "Administrador") {
+        return res.status(403).json({ message: "No tienes permiso para eliminar este usuario" });
+    }
+
+    const searched_user = await getDocument("Users", { uuid: uuid });
+    if (!searched_user) {
+        return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    if(searched_user.status !== "Active"){
+        return res.status(403).json({ message: "No se ha encontrado al usuario." });
+    }
+
+    const sync = await syncUserDelete(uuid);
+    if (!sync) {
+        return res.status(500).json({ message: "Error al eliminar el usuario" });
+    }
+
+    const status = {
+        status: "Inactive",
+    }
+
+    const deleted_user = await updateDocument(status, "Users", { uuid: uuid });
+
+    console.log("deleted_user: ", deleted_user);
+
+    if (!deleted_user) {
+        return res.status(500).json({ message: "Error al eliminar el usuario" });
+    }
+
+    return res.status(200).json({ message: "Usuario eliminado correctamente" });
 }
 
-const getAllUsers = (req, res) => {
-    res.status(200).send("OK Get All Users");
+const getAllUsers = async (req, res) => {
+    const token = req.headers.authorization;
+    const { email, name, lastname } = req.query;
+
+    if (!token) {
+        return res.status(401).json({ message: "Se requiere un token de inicio de sesión" });
+    }
+
+    const decodedToken = verifyTokenJWT(token);
+
+    if (!decodedToken) {
+        return res.status(401).json({ message: "Token inválido" });
+    }
+
+    if (decodedToken.user.role !== "Administrador") {
+        return res.status(403).json({ message: "No tienes permiso para ver todos los usuarios" });
+    }
+
+    const users = await getCollection("Users");
+    if (!users) {
+        return res.status(500).json({ message: "Error al obtener los usuarios" });
+    }
+
+    const filteredUsers = users.filter((user) => {
+        if (user.status !== "Active") return false;
+        if (email && user.email !== email) return false;
+        if (name && user.name !== name) return false;
+        if (lastname && user.lastname !== lastname) return false;
+        return true;
+    });
+
+    const usersToSend = filteredUsers.map((user) => {
+        return {
+            uuid: user.uuid,
+            name: user.name,
+            lastname: user.lastname,
+            email: user.email,
+            role: user.role,
+            created_at: user.created_at,
+        };
+    });
+
+    return res.status(200).json({ users: usersToSend });
 }
 
 /*Exporte de todos los metodos correspondientes al controlador para ser usados en nuestro Router.*/

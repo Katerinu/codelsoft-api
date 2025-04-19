@@ -13,7 +13,7 @@ const usersRouter = Router();
 
 /*Configuracion de la ruta base para users.
 Aqui deben ir todas las rutas necesarias*/
-usersRouter.get("/", getAllUsers);
+await usersRouter.get("/", getAllUsers);
 usersRouter.post("/", createUser)
 usersRouter.get("/:uuid",getUserById);
 usersRouter.patch("/:uuid",updateUser);

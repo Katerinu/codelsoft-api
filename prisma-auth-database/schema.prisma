@@ -19,6 +19,11 @@ enum Role {
   Cliente
 }
 
+enum Status{
+  Active
+  Inactive
+}
+
 model User {
   id          Int      @id @default(autoincrement())
   uuid        String   @unique
@@ -28,5 +33,6 @@ model User {
   lastname    String
   created_at  String
   updated_at  String
+  status      Status   @default(Active)
   role        Role     @default(Cliente)
 }

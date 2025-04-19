@@ -21,6 +21,7 @@ const syncUserCreation = async (user) => {
                     lastname: user.lastname,
                     email: user.email,
                     password: user.password,
+                    status: user.status,
                     role: user.role,
                     created_at: user.created_at,
                     updated_at: user.updated_at,
@@ -30,8 +31,7 @@ const syncUserCreation = async (user) => {
         }
         return false;
     } catch (error) {
-        console.error("Error in syncUserCreation:", error);
-        throw error;
+        return false;
     }
 };
 
@@ -56,14 +56,35 @@ const syncUserUpdate = async (user, uuid) => {
         }
         return false;
     } catch (error) {
-        console.error("Error in syncUserUpdate:", error);
-        throw error;
+        return false;
     }
 };
+
+const syncUserDelete = async (uuid) => {
+    try {
+        const userCheck = await prisma.user.findFirst({
+            where: {
+                uuid: uuid,
+            },
+        });
+        if (userCheck) {
+            const deletedUser = await prisma.user.update({
+                where: { uuid: uuid },
+                data: {
+                    status: "Inactive",
+                },
+            });
+            return true;
+        }
+        return false;
+    } catch (error) {
+        return false;
+    }
+}
 
 const login = (req, res) => {
     res.status(200).send("OK Login Check");
 }
 
 /*Exporte de todos los metodos correspondientes al controlador para ser usados en nuestro Router.*/
-export { authCheck, login , syncUserCreation, syncUserUpdate };
+export { authCheck, login , syncUserCreation, syncUserUpdate, syncUserDelete };
