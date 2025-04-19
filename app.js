@@ -46,7 +46,7 @@ app.use(morgan('dev'));
 app.use("/auth", authRouter);
 app.use("/videos", videoRouter);
 app.use("/bills", billsRouter);
-app.use("/users", usersRouter);
+app.use("/usuarios", usersRouter);
 
 /*Ruta base*/
 app.get('/', (req, res) => {

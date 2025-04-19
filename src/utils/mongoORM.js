@@ -2,10 +2,10 @@ import dotenv from 'dotenv';
 import { MongoClient, ObjectId } from 'mongodb';
 
 dotenv.config();
-const uri = process.env.MONGO_DATABASE_VIDEOS.replace(
+const uri = process.env.MONGO_DATABASE_USERS.replace(
     "<PASSWORD>",
-    process.env.MONGO_PASSWORD_VIDEOS
-    ).replace("<USER>", process.env.MONGO_USER_VIDEOS);
+    process.env.MONGO_PASSWORD_USERS
+    ).replace("<USER>", process.env.MONGO_USER_USERS);
 
 const client = new MongoClient(uri);
 const dbName = process.env.DATABASE_NAME;
@@ -24,7 +24,7 @@ const connectDB = async () => {
 };
 
 // CRUD Operations
-const createReport = async (data, collectionName) => {
+const createDocument = async (data, collectionName) => {
   const db = client.db(dbName);
   return await db.collection(collectionName).insertOne(data);
 };
@@ -54,4 +54,4 @@ const updateDocument = async (data, collectionName, query) => {
   return await db.collection(collectionName).updateOne(query, { $set: data });
 };
 
-export { connectDB, createReport, getDocumentbyId, getDocument, updateDocument, getCollection };
+export { connectDB, deleteDocument ,createDocument, getDocumentbyId, getDocument, updateDocument, getCollection };

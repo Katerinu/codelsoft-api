@@ -14,7 +14,25 @@ datasource db {
   url      = env("PPG_AUTH_DATABASE_URL")
 }
 
-model Placeholder {
-  id    Int     @id @default(autoincrement())
-  placeholderValue String
+enum Role {
+  Administrador
+  Cliente
+}
+
+enum Status{
+  Active
+  Inactive
+}
+
+model User {
+  id          Int      @id @default(autoincrement())
+  uuid        String   @unique
+  email       String   @unique
+  password    String
+  name        String
+  lastname    String
+  created_at  String
+  updated_at  String
+  status      Status   @default(Active)
+  role        Role     @default(Cliente)
 }
