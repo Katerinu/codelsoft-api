@@ -313,6 +313,20 @@ const getAllUsers = async (req, res) => {
     return res.status(200).json({ users: usersToSend });
 }
 
+const syncPasswordUpdate = async (uuid, new_password_hashed) => {
+    const searched_user = await getDocument("Users", { uuid: uuid });
+    if (!searched_user) {
+        return false;
+    }
+
+    const update_user = await updateDocument({ password: new_password_hashed }, "Users", { uuid: uuid });
+    if (!update_user) {
+        return false;
+    }
+
+    return true;
+}
+
 /*Exporte de todos los metodos correspondientes al controlador para ser usados en nuestro Router.*/
 export { 
     usersCheck, 
@@ -320,5 +334,6 @@ export {
     getUserById, 
     updateUser, 
     deleteUser, 
-    getAllUsers 
+    getAllUsers ,
+    syncPasswordUpdate
 };

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { authCheck, login } from '../controllers/authController.js';
+import { authCheck, login, updatePassword } from '../controllers/authController.js';
 
 /*Configuracion del router para que funcione como el enrutador de el auth.*/
 const authRouter = Router();
@@ -8,5 +8,6 @@ const authRouter = Router();
 Aqui deben ir todas las rutas necesarias*/
 authRouter.get("/", authCheck);
 authRouter.post("/login", login);
+authRouter.patch("/usuarios/:uuid", updatePassword);
 /*Exporte del modulo para ser llamado en app.js*/
 export default authRouter;
