@@ -66,12 +66,14 @@ const createUser = async (req, res) => {
     const sync = await syncUserCreation(user);
     
     if (!sync) {
+        console.log("Error al sincronizar el usuario con la base de datos externa");
         return res.status(500).json({ message: "Error al crear el usuario" });
     }
 
     const createdUser = await createDocument(user, "Users");
 
     if (!createdUser) {
+        console.log("Error al crear el usuario en la base de datos local");
         return res.status(500).json({ message: "Error al crear el usuario" });
     }
 

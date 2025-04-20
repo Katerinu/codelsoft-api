@@ -23,7 +23,7 @@ const createBill = async (req, res ) => {
         return res.status(401).json({ message: "Token inválido" });
     }
     // Verifica si el usuario tiene permisos de administrador
-    if (decodedToken.user.role !== "admin") {
+    if (decodedToken.user.role !== "Administrador") {
         return res.status(403).json({ message: "No tienes permisos para crear facturas" });
     }
 
@@ -71,7 +71,7 @@ const getBillById = async (req, res) => {
         where: { id: parseInt(id) },
     });
     // Verifica si el usuario tiene permisos de administrador
-    if (decodedToken.user.role !== "admin" && decodedToken.user.uuid !== bill.userUuid) {
+    if (decodedToken.user.role !== "Administrador" && decodedToken.user.uuid !== bill.userUuid) {
         return res.status(403).json({ message: "No tienes permisos para ver la facturas" });
     }
     if (!bill) {
@@ -93,7 +93,7 @@ const updateBills = async (req, res) => {
         return res.status(401).json({ message: "Token inválido" });
     }
     // Verifica si el usuario tiene permisos de administrador
-    if (decodedToken.user.role !== "admin") {
+    if (decodedToken.user.role !== "Administrador") {
         return res.status(403).json({ message: "No tienes permisos para crear facturas" });
     }
 
@@ -139,7 +139,7 @@ const deleteBill = async (req, res) => {
         return res.status(401).json({ message: "Token inválido" });
     }
     // Verifica si el usuario tiene permisos de administrador
-    if (decodedToken.user.role !== "admin") {
+    if (decodedToken.user.role !== "Administrador") {
         return res.status(403).json({ message: "No tienes permisos para eliminar facturas" });
     }
 
@@ -172,15 +172,45 @@ const userBills = async (req, res) => {
         return res.status(401).json({ message: "Token inválido" });
     }
 
-    if (decodedToken.user.role == "admin") {
-        const bills = await prisma.bill.findAll();
+    const { billStatus } = req.query;
+    console.log("Status recibido:", billStatus);
+    const validStatuses = ["Pending", "Paid", "Overdue"];
+    let filter = { };
+  
+    if (billStatus) {
+      if (!validStatuses.includes(billStatus)) {
+        return res.status(400).json({ message: "Estado inválido. Usa Pending, Paid o Overdue" });
+      }
+      filter.billStatus = billStatus;
+    }
+  
+    // Admin ve todas las facturas (con filtros opcionales)
+    if (decodedToken.user.role === "Administrador") {
+        const bills = await prisma.bill.findMany({ where: filter });
+        // desplegar por consola el status que recibe por parametro
+        console.log("Status recibido:", billStatus);
+        if (bills.length === 0) {
+            return res.status(404).json({
+                message: billStatus 
+                    ? `No se encontraron boletas con estado "${billStatus}"`
+                    : "No se encontraron boletas disponibles",
+            });
+        }
         return res.status(200).json({ data: bills });
     }
-    
-    const userUuid = decodedToken.user.uuid;
-    const bills = await prisma.bill.findMany({
-        where: { userUuid },
-    });
+  
+    // Clientes solo ven sus propias facturas
+    filter.userUuid = decodedToken.user.uuid;
+    filter.deleted = false;
+  
+    const bills = await prisma.bill.findMany({ where: filter });
+    if (bills.length === 0) {
+        return res.status(404).json({
+            message: billStatus 
+                ? `No se encontraron boletas con estado "${billStatus}"`
+                : "No se encontraron boletas disponibles",
+        });
+    }
     res.status(200).json({ data: bills });
 }
 
