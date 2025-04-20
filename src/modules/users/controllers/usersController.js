@@ -74,6 +74,7 @@ const createUser = async (req, res) => {
 
     if (!createdUser) {
         console.log("Error al crear el usuario en la base de datos local");
+        await syncUserDelete(uuid);
         return res.status(500).json({ message: "Error al crear el usuario" });
     }
 
