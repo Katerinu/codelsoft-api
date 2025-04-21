@@ -3,7 +3,7 @@ import express from 'express';
 import morgan from 'morgan';
 import { config } from 'dotenv';
 import { connectDB } from './src/utils/mongoORM.js';
-import { connectMongoose } from '../codelsoft-api/src/modules/video/controllers/videoController.js';
+import { connectMongoose } from './src/modules/video/controllers/videoController.js';
 
 /*Importes de los routers para asi poder acceder correctamente a las rutas correspondientes.*/
 import authRouter from './src/modules/auth/routers/authRouter.js';

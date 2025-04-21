@@ -41,7 +41,8 @@ const createUser = async (req, res) => {
         return res.status(400).json({ message: "Las contraseñas no coinciden" });
     }
 
-    const hashedPassword = bcrypt.hashSync(password, 10);
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
     const searched_user = await getDocument("Users", { email: email });
 

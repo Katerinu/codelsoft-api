@@ -195,7 +195,7 @@ const updatePassword = async (req, res) => {
         where: { uuid: uuid },
         data: {
             password: hashedPassword,
-            updated_at: dayjs().format("YYYY-MM-DD HH:mm:ss"),
+            updated_at: dayjs().format("YYYY-MM-DDTHH:mm:ssZ"),
         },
     });
     if (!updatedUser) {
