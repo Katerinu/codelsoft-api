@@ -113,8 +113,6 @@ const login = async (req, res) => {
         return res.status(401).json({ message: "Usuario inactivo. Pongase en contacto con un administrador." });
     }
 
-    console.log("User: ", user);
-
     const isMatch = await bcrypt.compareSync(password, user.password);
     if (!isMatch) {
         return res.status(401).json({ message: "Alguno de los campos es incorrecto." });
@@ -149,8 +147,6 @@ const updatePassword = async (req, res) => {
         return res.status(401).json({ message: "Token inválido" });
     }
 
-    console.log("Decoded Token: ", decodedToken.user.uuid);
-    console.log("UUID: ", uuid);
     if(decodedToken.user.uuid !== uuid) {
         return res.status(401).json({ message: "No tiene permiso para cambiar la contraseña de este usuario." });
     }

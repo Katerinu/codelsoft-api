@@ -159,10 +159,8 @@ const updateUser = async (req, res) => {
         return res.status(401).json({ message: "Se requiere un token de inicio de sesión" });
     }
 
-    console.log("UUID: ", uuid);
 
     const searched_user = await getDocument("Users", { uuid: uuid });
-    console.log("searched_user: ", searched_user);
     if (!searched_user) {
         return res.status(404).json({ message: "Usuario no encontrado" });
     }
@@ -207,8 +205,6 @@ const updateUser = async (req, res) => {
         email: userEmail,
         updated_at: updated_at,
     };
-
-    console.log(user);
 
     const sync = await syncUserUpdate(user, uuid);
     if (!sync) {
@@ -262,8 +258,6 @@ const deleteUser = async (req, res) => {
     }
 
     const deleted_user = await updateDocument(status, "Users", { uuid: uuid });
-
-    console.log("deleted_user: ", deleted_user);
 
     if (!deleted_user) {
         return res.status(500).json({ message: "Error al eliminar el usuario" });
