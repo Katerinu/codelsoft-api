@@ -37,7 +37,7 @@ const generateFakeBill = async () => {
         return null;
     }
 
-    const randomUser = faker.helpers.arrayElement(users);
+    const randomUser = users[Math.floor(Math.random() * users.length)];
     const userUuid = randomUser.uuid;
 
 
