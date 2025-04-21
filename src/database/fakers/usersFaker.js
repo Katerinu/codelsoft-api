@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 const generateFakeUser = async () => {
     const name = faker.person.firstName();
     const salt = await bcrypt.genSalt(10);
-    const password = await bcrypt.hash("name", salt);
+    const password = await bcrypt.hash(name, salt);
 
     const rol = faker.helpers.arrayElement(
         ["Administrador","Cliente"],

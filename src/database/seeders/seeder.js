@@ -25,6 +25,8 @@ const mainSeedingFunction = async () => {
         return false;
     }
 
+    console.log("Iniciando el proceso de seeding...");
+    console.log("Intentando crear", usersToAdd, "usuarios...");
     //Seeding de usuarios
     try {
         
