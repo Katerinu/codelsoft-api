@@ -1,13 +1,59 @@
 import { connectDB, createDocument, getDocument } from "../../utils/mongoORM.js";
 import { generateFakeUser } from "../fakers/usersFaker.js";
 import { PrismaClient } from '../../../prisma-auth-database/auth-client/index.js';
-
+import dayjs from "dayjs";
+import { v4 as uuidv4 } from "uuid";
+import bcrypt from "bcryptjs";
 const prisma = new PrismaClient();
 
 await connectDB();
 
 const seedUsers = async (numUsers) => {
     const users = [];
+    const existingUsers = await prisma.user.findMany();
+
+    if (existingUsers.length === 0) {
+        const salt_admin = await bcrypt.genSalt(10);
+        const hashed_adminpassword = await bcrypt.hash("admin", salt_admin);
+        const salt_user = await bcrypt.genSalt(10);
+        const hashed_userpassword = await bcrypt.hash("user", salt_user);
+        const user_admin = {
+            uuid: uuidv4(),
+            email: "admin@admin.com",
+            password: hashed_adminpassword,
+            name: "Admin",
+            lastname: "Admin Lastname",
+            created_at: dayjs().format("YYYY-MM-DDTHH:mm:ssZ"),
+            updated_at: dayjs().format("YYYY-MM-DDTHH:mm:ssZ"),
+            role: "Administrador",
+            status: "Active"
+        };
+
+        const createdUser = await createFakeUsers(user_admin);
+        if (!createdUser) {
+            console.log("Error al crear el usuario en la base de datos local");
+            return false;
+        }
+        console.log("Primer administrador creado correctamente en la base de datos local");
+        const user_user = {
+            uuid: uuidv4(),
+            email: "user@user.com",
+            password: hashed_userpassword,
+            name: "User",
+            lastname: "User Lastname",
+            created_at: dayjs().format("YYYY-MM-DDTHH:mm:ssZ"),
+            updated_at: dayjs().format("YYYY-MM-DDTHH:mm:ssZ"),
+            role: "Cliente",
+            status: "Active"
+        };
+
+        const createdUser2 = await createFakeUsers(user_user);
+        if (!createdUser2) {
+            console.log("Error al crear el usuario en la base de datos local");
+            return false;
+        }
+        console.log("Primer cliente creado correctamente en la base de datos local");
+    }
 
     for (let i = 0; i < numUsers; i++) {
         const user = await generateFakeUser();

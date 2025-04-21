@@ -4,7 +4,7 @@ import { seedVideos } from "../seeders/videosSeeder.js";
 
 const mainSeedingFunction = async () => {
 
-    const usersToAdd = 200;
+    const usersToAdd = 198; //Se van a crear la cantidad ingersada + 2 si es la primera vez que se intentan ingresar usuarios, ese 2 es el administrador y un usuario generico del sistema.
     const billsToAdd = 300;
     const videosToAdd = 400;
 
@@ -26,10 +26,10 @@ const mainSeedingFunction = async () => {
     }
 
     console.log("Iniciando el proceso de seeding...");
+    console.log("Si es la primera vez que se inicia el proceso de seeding, se agregarán 2 usuarios adicionales: un administrador y un usuario genérico del sistema.");
     console.log("Intentando crear", usersToAdd, "usuarios...");
     //Seeding de usuarios
     try {
-        
         const users = await seedUsers(usersToAdd);
         if (!users) {
             console.log("Error al crear los usuarios en la base de datos local");
