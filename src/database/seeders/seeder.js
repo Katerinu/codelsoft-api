@@ -1,9 +1,12 @@
 import { seedUsers } from "../seeders/usersSeeder.js";
 import { seedBills } from "../seeders/billsSeeder.js";
+import { seedVideos } from "../seeders/videosSeeder.js";
+
 const mainSeedingFunction = async () => {
 
     const usersToAdd = 200;
     const billsToAdd = 300;
+    const videosToAdd = 400;
 
     let userslength = 0;
 
@@ -17,6 +20,10 @@ const mainSeedingFunction = async () => {
         return false;
     }
 
+    if(!videosToAdd>400) {
+        console.log("El número de videos a agregar no puede ser mayor a 400");
+        return false;
+    }
 
     //Seeding de usuarios
     try {
@@ -49,6 +56,21 @@ const mainSeedingFunction = async () => {
     }
     catch (error) {
         console.error("Error detallado en la creación de facturas:", error);
+        return false;
+    }
+
+    try {
+        //Seeding de videos
+        console.log("Intentando crear", videosToAdd, "videos...");
+        const videos = await seedVideos(videosToAdd);
+        if (!videos) {
+            console.log("Error al crear los videos en la base de datos local");
+            return false;
+        }
+        console.log("Videos creados correctamente:", videos.length, " videos creados.");
+    }
+    catch (error) {
+        console.error("Error detallado en la creación de videos:", error);
         return false;
     }
 
