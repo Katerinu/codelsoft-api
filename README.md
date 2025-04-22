@@ -32,7 +32,7 @@ cp .env.example .env
 
 5. **Instalación de Imagenes de docker**
 ```bash
-docker compose up
+docker compose up -d
 ```
 Se recomienda esperar hasta que se inicien completamente las bases de datos para evitar errores en el siguiente paso
 
@@ -55,7 +55,7 @@ Este comando reinicia nuestras migraciones, en caso de que apareciera un mensaje
 
 ## Ejecutar la aplicación
 ```bash
-npm start
+npm run start
 ```
 El servidor se iniciará en el puerto **3000** (o en el puerto definido en la variable de entorno `PORT`). Accede a la API mediante `http://localhost:3000`.
 
