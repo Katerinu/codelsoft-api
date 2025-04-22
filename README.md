@@ -47,6 +47,12 @@ Se debe asegurar de haber instalado las imagenes de Docker y ademas de haber cre
 npm run migrate
 ```
 
+8. **Solucion de problemas**
+```bash
+npm run reset
+```
+Este comando reinicia nuestras migraciones, en caso de que apareciera un mensaje de error al intentar hacer `npm run migrate` se debe ejecutar este comando y luego para confirmar que no existan mas errores se debe ejecutar `npm run migrate`
+
 ## Ejecutar la aplicación
 ```bash
 npm start
