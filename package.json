@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
     "dev": "nodemon app.js",
+    "prod": "npm install && npm run generate && npm run deploy && npm run reset && npm run deploy",
     "generate": "npx prisma generate --schema ./prisma-auth-database/schema.prisma && npx prisma generate --schema ./prisma-bills-database/schema.prisma",
     "reset": "npx prisma migrate reset --force --skip-seed --schema ./prisma-auth-database/schema.prisma && npx prisma migrate reset --force --skip-seed --schema ./prisma-bills-database/schema.prisma",
     "migrate": "npx prisma migrate dev --schema ./prisma-auth-database/schema.prisma && npx prisma migrate dev --schema ./prisma-bills-database/schema.prisma",
