@@ -1,8 +1,12 @@
-# Ayudantia Arquitectura de Sistemas
-Este es el repositorio que sera utilizado durante la  ayudantía de arquitectura de sistemas, en este se encontrara todo lo desarrollado durante las capsulas.
+# Codelsoft Express API
+Este repositorio contiene el monolito modular que fue solicitado por codelsoft para generar las operaciones CRUD necesarias sobre el manejo de Videos, Usuarios y Facturas.
 
 ## Pre-requisitos
 - [Node.js](https://nodejs.org/es/) (version 22.14.0)
+- Mas adelante se explicara como instalar por medio de Docker, en caso de necesitar otra forma estas son las versiones utilizadas.
+- [MongoDB](https://www.mongodb.com/try/download/community) (version 7.0.5)
+- [MariaDB](https://mariadb.org) (version 11.3.2)
+- [PostgreSQL](https://www.postgresql.org/download/)(version 17.4)
 
 ## Instalación y configuración
 
@@ -26,16 +30,22 @@ npm install
 cp .env.example .env
 ```
 
-5. **Generar cliente de prisma**
+5. **Instalación de Imagenes de docker**
 ```bash
-npx prisma generate
+docker compose up
 ```
+Se recomienda esperar hasta que se inicien completamente las bases de datos para evitar errores en el siguiente paso
 
-6. **Crear la base de datos**
+6. **Creacion de clientes de Prisma**
 ```bash
-npx prisma db push
+npm run generate
 ```
+Se debe asegurar de haber instalado las imagenes de Docker y ademas de haber creado correctamente su .env
 
+7. **Inicializacion de migraciones**
+```bash
+npm run migrate
+```
 
 ## Ejecutar la aplicación
 ```bash
@@ -43,35 +53,19 @@ npm start
 ```
 El servidor se iniciará en el puerto **3000** (o en el puerto definido en la variable de entorno `PORT`). Accede a la API mediante `http://localhost:3000`.
 
+## Ejecutar la aplicación en entorno de desarrollo
+```bash
+npm run dev
+```
+Si se deseara se puede levantar el servidor en entorno de desarrollo, el servidor estara en el mismo puerto definido en la variable de entorno `PORT` en forma de desarrollo usando Nodemon.
+
 ## Seeder
 Para poblar la base de datos con datos de prueba, ejecuta el siguiente comando:
 ```bash
 npm run seed
 ```
+Si es la primera vez que se corre el comando `seed` este generará 200 usuarios, 300 facturas y 400 videos. Posteriormente cada vez que se ejecuten se generaran 198 usuarios, 300 facturas y 400 videos.
 
-# Extras
-Lo que se encuentra a continuación es un listado de recursos que podrían ser de utilidad para el desarrollo del curso, a medida que se avance ire agregando mas cosas.
-
-# Herramientas
-- [DBDiagram](https://dbdiagram.io/home): Herramienta para diseñar diagramas de bases de datos.
-- [Postman](https://www.postman.com/): Herramienta para probar APIs.
-- [MongoDB Compass](https://www.mongodb.com/try/download/compass): Cliente de MongoDB con interfaz gráfica.
-
-# Librerías de Node
-- [Express](https://expressjs.com/): Framework para crear aplicaciones web en Node.js.
-- [Morgan](https://www.npmjs.com/package/morgan): Middleware para loggear las peticiones HTTP.
-- [Nodemon](https://www.npmjs.com/package/nodemon): Herramienta que reinicia el servidor automáticamente al detectar cambios en los archivos.
-- [Mongoose](https://mongoosejs.com/): Librería para interactuar con bases de datos MongoDB.
-- [Prisma](https://www.prisma.io/): ORM para bases de datos SQL y NoSQL.
-- [Dotenv](https://www.npmjs.com/package/dotenv): Librería para cargar variables de entorno desde un archivo `.env`.
-- [Zod](https://www.npmjs.com/package/zod): Librería para validar datos en JavaScript.
-- [bcrypt](https://www.npmjs.com/package/bcrypt): Librería para encriptar contraseñas.
-- [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken): Librería para generar y verificar tokens JWT.
-- [cors](https://www.npmjs.com/package/cors): Middleware para habilitar CORS en Express.
-- [helmet](https://www.npmjs.com/package/helmet): Middleware para mejorar la seguridad de una aplicación Express.
-- [express-mongo-sanitize](https://www.npmjs.com/package/express-mongo-sanitize): Middleware para prevenir ataques de inyección de código en MongoDB.
-- [express-rate-limit](https://www.npmjs.com/package/express-rate-limit): Middleware para limitar la cantidad de peticiones a una API.
-
-# Recursos
-- [Repositorio de curso de express con MongoDB](https://github.com/jonasschmedtmann/complete-node-bootcamp)
-- [Conventional Commits](https://gist.github.com/qoomon/5dfcdf8eec66a051ecd85625518cfd13)
+## Autores
+- [@Katerinu](https://www.github.com/Katerinu)
+- [@AleUCN](https://github.com/AleUCN)
