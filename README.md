@@ -5,7 +5,7 @@ Este repositorio contiene el monolito modular que fue solicitado por codelsoft p
 - [Node.js](https://nodejs.org/es/) (version 22.14.0)
 - Mas adelante se explicara como instalar por medio de Docker, en caso de necesitar otra forma estas son las versiones utilizadas.
 - [MongoDB](https://www.mongodb.com/try/download/community) (version 7.0.5)
-- [MariaDB](https://mariadb.org) (version 11.3.2)
+- [MariaDB](https://mariadb.org) (version 10.7.4)
 - [PostgreSQL](https://www.postgresql.org/download/)(version 17.4)
 
 ## Instalación y configuración
