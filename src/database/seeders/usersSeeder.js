@@ -1,4 +1,4 @@
-import { connectDB, createDocument, getDocument } from "../../utils/mongoORM.js";
+import { connectDB, createDocument, getDocument, getCollection } from "../../utils/mongoORM.js";
 import { generateFakeUser } from "../fakers/usersFaker.js";
 import { PrismaClient } from '../../../prisma-auth-database/auth-client/index.js';
 import dayjs from "dayjs";
@@ -9,10 +9,12 @@ const prisma = new PrismaClient();
 await connectDB();
 
 const seedUsers = async (numUsers) => {
+    await connectDB();
     const users = [];
-    const existingUsers = await prisma.user.findMany();
+    const users_in_db = await getCollection("Users");
+    console.log("users_in_db: ", users_in_db.length);
 
-    if (existingUsers.length === 0) {
+    if (users_in_db.length === 0) {
         const salt_admin = await bcrypt.genSalt(10);
         const hashed_adminpassword = await bcrypt.hash("admin", salt_admin);
         const salt_user = await bcrypt.genSalt(10);
