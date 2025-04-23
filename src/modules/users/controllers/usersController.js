@@ -198,6 +198,10 @@ const updateUser = async (req, res) => {
     if(name !== undefined || lastname !== undefined || email !== undefined) {
         updated_at = dayjs().format("YYYY-MM-DDTHH:mm:ssZ");
     }
+    
+    if(name === "" || lastname === "" || email === "") {
+        return res.status(400).json({ message: "No se puede actualizar un campo vacio" });
+    }
 
     const user = {
         name: userName,
