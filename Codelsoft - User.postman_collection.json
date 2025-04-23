@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "9730dcb6-914d-4791-9a7b-42237f0d7618",
+		"_postman_id": "5e5268fb-7a12-41ea-97aa-b37006d43faa",
 		"name": "Codelsoft - User",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "41341769"
+		"_exporter_id": "33599274"
 	},
 	"item": [
 		{
@@ -68,7 +68,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"userb\", \r\n    \"lastname\": \"userb\", \r\n    \"email\": \"userb@gmail.com\", \r\n    \"password\": \"user\", \r\n    \"password_confirmation\": \"user\", \r\n    \"role\": \"Cliente\"\r\n}",
+							"raw": "{\r\n    \"name\":\"user\", \r\n    \"lastname\": \"user\", \r\n    \"email\": \"user@gmail.com\", \r\n    \"password\": \"user\", \r\n    \"password_confirmation\": \"user\", \r\n    \"role\": \"Cliente\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -127,7 +127,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"userb@gmail.com\", \r\n    \"password\": \"user\"\r\n}",
+							"raw": "{\r\n    \"email\": \"user@gmail.com\", \r\n    \"password\": \"user\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -572,7 +572,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"user@user.com\", \r\n    \"password\": \"user\"\r\n}",
+							"raw": "{\r\n    \"email\": \"user@gmail.com\", \r\n    \"password\": \"user\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -709,7 +709,26 @@
 			"type": "string"
 		},
 		{
+			"key": "auth_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "auth_uuid",
+			"value": "",
+			"type": "string"
+		},
+		{
 			"key": "video_uuid",
+			"value": ""
+		},
+		{
+			"key": "user_uuid",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "video_id",
 			"value": "",
 			"type": "string"
 		}
